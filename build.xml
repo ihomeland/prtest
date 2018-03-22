@@ -1,0 +1,17 @@
+<project name="prtest" 
+         default="clean" 
+         basedir=".">
+
+  <target name="clean">
+    <echo message="Doing clean job" />
+  </target>
+  
+  <target name="build">
+    <echo message="Doing build job" />
+  </target>
+
+  <target name="deploy">
+    <echo message="Doing deploy job" />
+  </target>
+
+</project>
