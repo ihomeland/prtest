@@ -27,10 +27,10 @@ jobs:
 
     - name: Download wildfly server and start the testing
       run: |
-        wget https://download.jboss.org/wildfly/19.0.0.Final/wildfly-19.0.0.Final.zip
+        wget -q https://download.jboss.org/wildfly/19.0.0.Final/wildfly-19.0.0.Final.zip
         unzip -q wildfly-19.0.0.Final.zip
         JBOSS_HOME="$GITHUB_WORKSPACE/wildfly-19.0.0.Final"
         export JBOSS_HOME
-        echo "JBOSS_HOME: $JBOSS_HOM"
+        echo "JBOSS_HOME: $JBOSS_HOME"
         mvn clean test -Parq-managed -Dtest=MemberRegistrationIT
 
