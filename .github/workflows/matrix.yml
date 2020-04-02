@@ -32,7 +32,7 @@ jobs:
         JBOSS_HOME="$GITHUB_WORKSPACE/wildfly-19.0.0.Final"
         export JBOSS_HOME
         echo "JBOSS_HOME: $JBOSS_HOME"
-        java --version
+        java -version
         mvn --version
         mvn clean test -B -Parq-managed -Dtest=MemberRegistrationIT
 

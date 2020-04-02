@@ -1,6 +1,6 @@
 # This is a demo workflow to run the tests with database set up
 
-name: tests in matrix
+name: test with db service
 on:
   pull_request:
     branches:
@@ -10,7 +10,7 @@ on:
       - 'src/test/java/org/jboss/as/quickstarts/kitchensink/test/MemberRegistrationIT2.java' 
 
 jobs:
-  matrix_with_db:
+  with_db:
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -49,7 +49,7 @@ jobs:
         mv postgresql.jar $GITHUB_WORKSPACE/wildfly-19.0.0.Final/modules/system/layers/base/org/postgresql/main/
         cp standalone-full.xml $GITHUB_WORKSPACE/wildfly-19.0.0.Final/standalone/configuration/
         echo "JBOSS_HOME: $JBOSS_HOME"
-        java --version
+        java -version
         mvn --version
         mvn clean test -B -Parq-managed -Dtest=MemberRegistrationIT2
 
