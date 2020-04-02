@@ -1,0 +1,34 @@
+# This is a demo workflow to run the tests in matrix set up
+
+name: tests in matrix
+on:
+  pull_request:
+    branches:
+      - master
+    paths:
+      - 'src/test/resources/test-ds.xml' 
+      - 'src/test/java/org/jboss/as/quickstarts/kitchensink/test/MemberRegistrationIT.java' 
+
+jobs:
+  matrix_tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: [8, 11]
+
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+
+    - name: Set up Java to ${{ matrix.java }}
+      uses: actions/setup-java@v1
+      with:
+        java-version: ${{ matrix.java }}
+
+    - name: Download wildfly server and start the testing
+      run: |
+        wget https://download.jboss.org/wildfly/19.0.0.Final/wildfly-19.0.0.Final.zip
+        unzip -q wildfly-19.0.0.Final.zip
+        echo "::set-env name=JBOSS_HOME::$GITHUB_WORKSPACE/wildfly-19.0.0.Final"
+        mvn clean test -Parq-managed -Dtest=MemberRegistrationIT
+
