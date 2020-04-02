@@ -29,6 +29,8 @@ jobs:
       run: |
         wget https://download.jboss.org/wildfly/19.0.0.Final/wildfly-19.0.0.Final.zip
         unzip -q wildfly-19.0.0.Final.zip
-        echo "::set-env name=JBOSS_HOME::$GITHUB_WORKSPACE/wildfly-19.0.0.Final"
+        JBOSS_HOME="$GITHUB_WORKSPACE/wildfly-19.0.0.Final"
+        export JBOSS_HOME
+        echo "JBOSS_HOME: $JBOSS_HOM"
         mvn clean test -Parq-managed -Dtest=MemberRegistrationIT
 
