@@ -27,7 +27,7 @@ jobs:
       wildfly:
         image: aoingl/docker-images:wildfly-19.0.0.Final
         volumes:
-          - /home/runner/work/prtest/prtest/modules/org/postgresql:/opt/jboss/wildfly/modules/system/layers/base/org/postgresql/
+          - /home/runner/work/prtest/modules/org/postgresql:/opt/jboss/wildfly/modules/system/layers/base/org/postgresql/
         ports:
           - 8080/tcp
           - 9990/tcp
@@ -48,6 +48,7 @@ jobs:
 
     - name: Set up postgresql jdbc driver for wildfly server
       run: |
+        sudo cp -r modules/* ../modules/
         docker exec wildfly /opt/jboss/wildfly/bin/jboss-cli.sh -c --command="/subsystem=datasources/jdbc-driver=postgresql:add(driver-name=postgresql,driver-module-name=org.postgresql,driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)"
 
     - name: Running the test
