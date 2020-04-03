@@ -48,6 +48,7 @@ jobs:
 
     - name: Set up postgresql jdbc driver for wildfly server
       run: |
+        ip a
         sudo cp -r modules/* ../modules/
         docker exec wildfly /opt/jboss/wildfly/bin/jboss-cli.sh -c --command="/subsystem=datasources/jdbc-driver=postgresql:add(driver-name=postgresql,driver-module-name=org.postgresql,driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)"
 
