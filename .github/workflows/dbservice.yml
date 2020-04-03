@@ -31,7 +31,7 @@ jobs:
         ports:
           - 8080/tcp
           - 9990/tcp
-        options: --name wildfly --health-cmd "curl -s http://localhost:9990/health" --health-interval 10s --health-timeout 5s --health-retries 5 --entrypoint /opt/jboss/wildfly/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0
+        options: --name wildfly --health-cmd "curl -s http://localhost:9990/health" --health-interval 10s --health-timeout 5s --health-retries 5 --entrypoint "/opt/jboss/wildfly/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0"
 
     strategy:
       matrix:
