@@ -34,5 +34,5 @@ jobs:
         echo "JBOSS_HOME: $JBOSS_HOME"
         java -version
         mvn --version
-        mvn clean test -B -Parq-managed -Dtest=MemberRegistrationIT
+        mvn clean test -B --no-transfer-progress -Parq-managed -Dtest=MemberRegistrationIT
 

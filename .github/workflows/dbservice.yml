@@ -6,7 +6,7 @@ on:
     branches:
       - master
     paths:
-      - 'src/test/resources/test-ds2.xml' 
+      - 'src/test/resources/test2-ds.xml' 
       - 'src/test/java/org/jboss/as/quickstarts/kitchensink/test/MemberRegistrationIT2.java' 
 
 jobs:
@@ -20,10 +20,18 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: kitchensink-quickstart-test
         ports:
-        # will assign a random free host port
         - 5432/tcp
         # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+      wildfly:
+        image: jboss/wildfly:19.0.0.Final
+        volumes:
+          - $GITHUB_WORKSPACE/modules/org/postgresql:/opt/jboss/wildfly/modules/system/layers/base/org/postgresql/
+        ports:
+          - 8080/tcp
+          - 9990/tcp
+        options: --name wildfly --health-cmd "curl -s http://localhost:9990/health" --health-interval 10s --health-timeout 5s --health-retries 5 --entrypoint /opt/jboss/wildfly/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0
 
     strategy:
       matrix:
@@ -38,18 +46,11 @@ jobs:
       with:
         java-version: ${{ matrix.java }}
 
-    - name: Download wildfly server and start the testing
+    - name: Set up postgresql jdbc driver for wildfly server
       run: |
-        wget -q https://download.jboss.org/wildfly/19.0.0.Final/wildfly-19.0.0.Final.zip
-        unzip -q wildfly-19.0.0.Final.zip
-        JBOSS_HOME="$GITHUB_WORKSPACE/wildfly-19.0.0.Final"
-        export JBOSS_HOME
-        wget -q -O postgresql.jar https://repo1.maven.org/maven2/org/postgresql/postgresql/42.2.9.jre7/postgresql-42.2.9.jre7.jar
-        cp -r modules/* $GITHUB_WORKSPACE/wildfly-19.0.0.Final/modules/system/layers/base/
-        mv postgresql.jar $GITHUB_WORKSPACE/wildfly-19.0.0.Final/modules/system/layers/base/org/postgresql/main/
-        cp standalone-full.xml $GITHUB_WORKSPACE/wildfly-19.0.0.Final/standalone/configuration/
-        echo "JBOSS_HOME: $JBOSS_HOME"
-        java -version
-        mvn --version
-        mvn clean test -B -Parq-managed -Dtest=MemberRegistrationIT2
+        docker exec wildfly /opt/jboss/wildfly/bin/add-user.sh -e -u admin -p admin -s
+        docker exec wildfly /opt/jboss/wildfly/bin/jboss-cli.sh -c --command="/subsystem=datasources/jdbc-driver=postgresql:add(driver-name=postgresql,driver-module-name=org.postgresql,driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)"
+
+    - name: Running the test
+      run: mvn clean test -B --no-transfer-progress -Parq-remote -Darquillian.launch=wildfly-remote -Dtest=MemberRegistrationIT2
 
