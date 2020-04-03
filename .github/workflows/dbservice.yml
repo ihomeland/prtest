@@ -27,7 +27,7 @@ jobs:
       wildfly:
         image: jboss/wildfly:19.0.0.Final
         volumes:
-          - $GITHUB_WORKSPACE/modules/org/postgresql:/opt/jboss/wildfly/modules/system/layers/base/org/postgresql/
+          - /home/runner/work/prtest/prtest/modules/org/postgresql:/opt/jboss/wildfly/modules/system/layers/base/org/postgresql/
         ports:
           - 8080/tcp
           - 9990/tcp
