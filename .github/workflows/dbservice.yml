@@ -25,13 +25,13 @@ jobs:
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
       wildfly:
-        image: jboss/wildfly:19.0.0.Final
+        image: aoingl/docker-images:wildfly-19.0.0.Final
         volumes:
           - /home/runner/work/prtest/prtest/modules/org/postgresql:/opt/jboss/wildfly/modules/system/layers/base/org/postgresql/
         ports:
           - 8080/tcp
           - 9990/tcp
-        options: --name wildfly --health-cmd "curl -s http://localhost:9990/health" --health-interval 10s --health-timeout 5s --health-retries 5 --entrypoint "/opt/jboss/wildfly/bin/standalone.sh -b 0.0.0.0 -bmanagement 0.0.0.0"
+        options: --name wildfly --link postgres --health-cmd "curl -s http://localhost:9990/health" --health-interval 20s --health-timeout 5s --health-retries 5
 
     strategy:
       matrix:
@@ -48,7 +48,6 @@ jobs:
 
     - name: Set up postgresql jdbc driver for wildfly server
       run: |
-        docker exec wildfly /opt/jboss/wildfly/bin/add-user.sh -e -u admin -p admin -s
         docker exec wildfly /opt/jboss/wildfly/bin/jboss-cli.sh -c --command="/subsystem=datasources/jdbc-driver=postgresql:add(driver-name=postgresql,driver-module-name=org.postgresql,driver-xa-datasource-class-name=org.postgresql.xa.PGXADataSource)"
 
     - name: Running the test
