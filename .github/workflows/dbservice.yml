@@ -20,7 +20,7 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: kitchensink-quickstart-test
         ports:
-        - 5432/tcp
+        - 5432:5432
         # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
@@ -29,8 +29,8 @@ jobs:
         volumes:
           - /home/runner/work/prtest/modules/org/postgresql:/opt/jboss/wildfly/modules/system/layers/base/org/postgresql/
         ports:
-          - 8080/tcp
-          - 9990/tcp
+          - 8080:8080
+          - 9990:9990
         options: --name wildfly --link postgres --health-cmd "curl -s http://localhost:9990/health" --health-interval 20s --health-timeout 5s --health-retries 5
 
     strategy:
