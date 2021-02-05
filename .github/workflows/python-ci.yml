@@ -26,7 +26,6 @@ jobs:
           echo -e "list root dir /"
           ls -l /
           echo -e "list workdir /workdir"
-          ls -l /workdir
+          ls -l /workdir/*
           echo -e "execute /workdir/build.sh"
-          cat /workdir/build.sh
           bash -x /workdir/build.sh
