@@ -2,18 +2,10 @@ name: Python CI
 on:
   push:
     branches:
-      - master
-    paths:
-      - .github/**
-      - python/**
+      - eventbus_clients_ci_tests
   pull_request:
     branches:
-      - master
-    paths:
-      - .github/**
-      - python/**
-  schedule:
-    - cron:  '* 4 * * *'
+      - eventbus_clients_ci_tests
 defaults:
   run:
     working-directory: /workdir
@@ -34,9 +26,3 @@ jobs:
           pwd
           ls -l /workdir
           bash -x python/build.sh
-      - name: Get project version
-        run: echo "PROJECT_VERSION=$(cat setup.py |grep "version="|cut -d "'" -f2)" >> $GITHUB_ENV
-      - name: Deploy to Bintray
-        if: ${{ github.repository_owner == 'vert-x3' && github.event_name == 'push' && !endsWith(env.PROJECT_VERSION, '-SNAPSHOT') }}
-        run: |
-          curl -T dist/Vertx-${{ env.PROJECT_VERSION }}.tar.gz -u${{ secrets.APIKEY }} https://api.bintray.com/content/vertx/vertx-eventbus-bridge-clients/python/${{ env.PROJECT_VERSION }}/Vertx-${{ env.PROJECT_VERSION }}.tar.gz
