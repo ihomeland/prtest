@@ -1,0 +1,36 @@
+name: C Sharp CI
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - .github/**
+      - C#/**
+  pull_request:
+    branches:
+      - master
+    paths:
+      - .github/**
+      - C#/**
+  schedule:
+    - cron:  '* 4 * * *'
+jobs:
+  Build_CSharp_Client:
+    name: Build C# Client
+    runs-on: ubuntu-latest
+    container:
+      image: microsoft/dotnet
+      volumes:
+        - ${{ github.workspace }}/C#:/workdir:Z
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Run build
+        run: bash -x /workdir/vertx-eventbus/build.sh
+      - name: Get project version
+        run: echo "PROJECT_VERSION=$(cat VERSION)" >> $GITHUB_ENV
+      - name: Deploy to Bintray
+        if: ${{ github.repository_owner == 'vert-x3' && github.event_name == 'push' && !endsWith(env.PROJECT_VERSION, '-SNAPSHOT') }}
+        run: |
+          curl -T /vertx-eventbus/bin/Debug/netcoreapp1.1/vertx-eventbus.dll -u${{ secrets.APIKEY }} https://api.bintray.com/content/vertx/vertx-eventbus-bridge-clients/dotnet-core-1.1/${{ env.PROJECT_VERSION }}/vertx-eventbus-${{ env.PROJECT_VERSION }}.dll
+          curl -T /vertx-eventbus/bin/Debug/netcoreapp1.1/vertx-eventbus.pdb -u${{ secrets.APIKEY }} https://api.bintray.com/content/vertx/vertx-eventbus-bridge-clients/dotnet-core-1.1/${{ env.PROJECT_VERSION }}/vertx-eventbus-${{ env.PROJECT_VERSION }}.pdb
