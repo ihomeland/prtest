@@ -6,9 +6,6 @@ on:
   pull_request:
     branches:
       - eventbus_clients_ci_tests
-defaults:
-  run:
-    working-directory: /workdir
 jobs:
   Build_Python_Client:
     name: Build Python Client
@@ -23,5 +20,5 @@ jobs:
       - name: Run build
         run: |
           ls -l
-          ls -l /workdir
-          bash -x python/build.sh
+          cd /workdir
+          bash -x /workdir/build.sh
