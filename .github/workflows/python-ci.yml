@@ -12,13 +12,14 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: python:alpine
-      volumes:
-        - ${{ github.workspace }}/python:/workdir:Z
+ #     volumes:
+ #       - ${{ github.workspace }}/python:/workdir:Z
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Run build
         run: |
+          ln -s ${{ github.workspace }}/python /workdir
           ls -l
           cd /workdir
           bash -x /workdir/build.sh
