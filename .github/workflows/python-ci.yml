@@ -19,7 +19,14 @@ jobs:
         uses: actions/checkout@v2
       - name: Run build
         run: |
+          echo -e "link to /workdir"
           ln -s ${{ github.workspace }}/python /workdir
-          ls -l
-          cd /workdir
+          echo -e "list current dir"
+          ls -l 
+          echo -e "list root dir /"
+          ls -l /
+          echo -e "list workdir /workdir"
+          ls -l /workdir
+          echo -e "execute /workdir/build.sh"
+          cat /workdir/build.sh
           bash -x /workdir/build.sh
