@@ -23,6 +23,5 @@ jobs:
       - name: Run build
         run: |
           ls -l
-          pwd
           ls -l /workdir
           bash -x python/build.sh
