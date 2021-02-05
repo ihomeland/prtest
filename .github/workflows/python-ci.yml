@@ -17,10 +17,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Run build
+      - name: Prepare 
         run: |
           echo -e "link to /workdir"
           ln -s ${{ github.workspace }}/python /workdir
+      - name: Run build
+        run: |
           echo -e "list current dir"
           ls -l 
           echo -e "list root dir /"
