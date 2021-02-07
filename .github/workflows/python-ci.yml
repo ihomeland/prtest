@@ -6,28 +6,17 @@ on:
   pull_request:
     branches:
       - eventbus_clients_ci_tests
+defaults:
+  run:
+    working-directory: python
 jobs:
   Build_Python_Client:
     name: Build Python Client
     runs-on: ubuntu-latest
-    container:
-      image: python:alpine
- #     volumes:
- #       - ${{ github.workspace }}/python:/workdir:Z
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Prepare 
-        run: |
-          echo -e "link to /workdir"
-          ln -s ${{ github.workspace }}/python /workdir
-      - name: Run build
-        run: |
-          echo -e "list current dir"
-          ls -l 
-          echo -e "list root dir /"
-          ls -l /
-          echo -e "list workdir /workdir"
-          ls -l /workdir/*
-          echo -e "execute /workdir/build.sh"
-          bash -x /workdir/build.sh
+      - name: Run Python build
+        run: python3 setup.py sdist
+      - name: Check built result
+        run: ls -l dist/
