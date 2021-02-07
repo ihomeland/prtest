@@ -8,18 +8,27 @@ defaults:
     working-directory: C
 jobs:
   Build_C_Clients:
-    name: Build C Clients
+    name: Build C Clients - ${{ matrix.CROSS_TRIPLE }}
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        CROSS_TRIPLE: [x86_64-linux-gnu, i686-w64-mingw32, x86_64-w64-mingw32, x86_64-apple-darwin]
+    container:
+      image: multiarch/crossbuild
+      env:
+        CROSS_TRIPLE: ${{ matrix.CROSS_TRIPLE }}
+      volumes:
+        - ${{ github.workspace }}:/workdir:Z
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Run docker build
-        run: bash -x build.sh
-      - name: List all distributions
-        run: ls -l target
+      - name: Run make build
+        run: make
       - name: Get project version
         run: echo "PROJECT_VERSION=$(cat VERSION)" >> $GITHUB_ENV
-      - name: Deploy to Bintray
+      - name: list targets
+        run: ls -l target
+      - name: Deploy to Bintray - ${{ matrix.CROSS_TRIPLE }}
         if: ${{ github.repository_owner == 'vert-x3' && github.event_name == 'push' && !endsWith(env.PROJECT_VERSION, '-SNAPSHOT') }}
         run: |
           curl -T target/${{ matrix.CROSS_TRIPLE }}/libeventbus.a -u${{ secrets.APIKEY }} https://api.bintray.com/content/vertx/vertx-eventbus-bridge-clients/C/${{ env.PROJECT_VERSION }}/libeventbus-${{ matrix.CROSS_TRIPLE }}-${{ env.PROJECT_VERSION }}.a
