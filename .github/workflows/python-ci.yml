@@ -14,14 +14,19 @@ jobs:
     name: Build Python Client
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+      - name: Set up Python 3
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
       - name: Run Python build
         run: python3 setup.py sdist
-      - name: Check built result
-        run: ls -l dist/
       - name: Get project version
         run: echo "PROJECT_VERSION=$(cat setup.py |grep "version="|cut -d "'" -f2)" >> $GITHUB_ENV
-      - name: Deploy to bintray
+      - name: Deploy to PyPI
         if: ${{ github.event_name == 'push' && !endsWith(env.PROJECT_VERSION, '-SNAPSHOT') }}
-        run: curl -T dist/Vertx-${{ env.PROJECT_VERSION }}.tar.gz -u${{ secrets.APIKEY }} https://api.bintray.com/content/lgao/vertx-eventbus-bridge-clients/python/${{ env.PROJECT_VERSION }}/Vertx-${{ env.PROJECT_VERSION }}.tar.gz
+        uses: pypa/gh-action-pypi-publish@master
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
+          repository_url: https://test.pypi.org/legacy/
+
