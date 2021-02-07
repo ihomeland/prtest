@@ -24,4 +24,4 @@ jobs:
         run: echo "PROJECT_VERSION=$(cat setup.py |grep "version="|cut -d "'" -f2)" >> $GITHUB_ENV
       - name: Deploy to bintray
         if: ${{ github.event_name == 'push' && !endsWith(env.PROJECT_VERSION, '-SNAPSHOT') }}
-        run: curl -T dist/Vertx-${{ env.PROJECT_VERSION }}.tar.gz -u${{ secrets.APIKEY }} https://api.bintray.com/content/vertx/vertx-eventbus-bridge-clients/python/${{ env.PROJECT_VERSION }}/Vertx-${{ env.PROJECT_VERSION }}.tar.gz
+        run: curl -T dist/Vertx-${{ env.PROJECT_VERSION }}.tar.gz -u${{ secrets.APIKEY }} https://api.bintray.com/content/lgao/vertx-eventbus-bridge-clients/python/${{ env.PROJECT_VERSION }}/Vertx-${{ env.PROJECT_VERSION }}.tar.gz
