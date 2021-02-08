@@ -22,7 +22,7 @@ jobs:
       - name: Deploy to NPM
         if: ${{ github.event_name == 'push' && !endsWith(env.PROJECT_VERSION, '-SNAPSHOT') }}
         uses: JS-DevTools/npm-publish@v1
-        working-directory: nodejs
         with:
           token: ${{ secrets.NPM_TOKEN }}
           check-version: true
+          package: nodejs/package.json
