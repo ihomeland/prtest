@@ -26,3 +26,4 @@ jobs:
           token: ${{ secrets.NPM_TOKEN }}
           check-version: true
           package: nodejs/package.json
+          access: public
