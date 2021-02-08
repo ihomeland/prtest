@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 cwd=$(cd `dirname $0` && pwd)
-wd="/go/src/github.com/vert-x3/vertx-eventbus-bridge-clients/Go"
+wd="${GOPATH}/src/github.com/vert-x3/vertx-eventbus-bridge-clients/Go"
 mkdir -p $wd
 cd $wd
 [ ! -s eventbus ] && ln -s $cwd/eventbus
