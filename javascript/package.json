@@ -1,7 +1,7 @@
 {
   "name": "@lgao/eventbus-bridge-client.js-test",
   "author": "The Vert.x Team",
-  "version": "1.0.0-2",
+  "version": "1.0.0-2-SNAPSHOT",
   "keywords": [
     "websockets",
     "websocket",
