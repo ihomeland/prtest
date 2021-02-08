@@ -1,14 +1,14 @@
-name: Node CI
+name: Javascript CI
 on:
   push:
     branches:
       - eventbus_clients_ci_tests
 defaults:
   run:
-    working-directory: nodejs
+    working-directory: javascript
 jobs:
-  Build_NodeJs_Client:
-    name: Build Nodejs Client
+  Build_Javascript_Client:
+    name: Build JavaScript Client
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

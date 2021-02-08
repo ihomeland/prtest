@@ -2,7 +2,7 @@ name: C Clients CI
 on:
   push:
     branches:
-      - eventbus_clients_ci_tests
+      - master
 defaults:
   run:
     working-directory: C
