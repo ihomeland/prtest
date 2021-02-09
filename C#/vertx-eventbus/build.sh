@@ -2,4 +2,5 @@
 set -e
 cd /workdir/vertx-eventbus
 dotnet restore
-dotnet build
+dotnet build --no-restore
+dotnet pack -c Release --include-source
