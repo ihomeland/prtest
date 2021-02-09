@@ -2,7 +2,7 @@ name: C Sharp CI
 on:
   push:
     branches:
-      - eventbus_clients_ci_tests
+      - not-existed
 defaults:
   run:
     working-directory: C#/vertx-eventbus

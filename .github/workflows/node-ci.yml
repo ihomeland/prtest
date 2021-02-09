@@ -2,7 +2,7 @@ name: Node CI
 on:
   push:
     branches:
-      - eventbus_clients_ci_tests
+      - non-existed
 defaults:
   run:
     working-directory: nodejs
