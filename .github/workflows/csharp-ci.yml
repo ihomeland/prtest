@@ -27,5 +27,5 @@ jobs:
         if: ${{ github.event_name == 'push' && !endsWith(env.PROJECT_VERSION, '-SNAPSHOT') }}
         uses: brandedoutcast/publish-nuget@v2
         with:
-          PROJECT_FILE_PATH: vertx-eventbus.csproj
+          PROJECT_FILE_PATH: C#/vertx-eventbus/vertx-eventbus.csproj
           NUGET_KEY: ${{ secrets.NUGET_API_KEY }}
