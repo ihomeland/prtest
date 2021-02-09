@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageId>lgao.test.vertx.eventBus.elient</PackageId>
+    <PackageId>lgao.test.vertx.eventbus.elient</PackageId>
     <Version>1.0.1</Version>
     <TargetFrameworks>netcoreapp2.1;netcoreapp3.1;net48</TargetFrameworks>
     <Authors>The Vertx Team</Authors>
