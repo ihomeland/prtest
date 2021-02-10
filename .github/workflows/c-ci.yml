@@ -8,18 +8,11 @@ defaults:
     working-directory: C
 jobs:
   Build_C_Clients:
-    name: Build C Clients - ${{ matrix.CROSS_TRIPLE }}
+    name: Build C Clients
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-#        CROSS_TRIPLE: [x86_64-linux-gnu, i686-w64-mingw32, x86_64-w64-mingw32, x86_64-apple-darwin]
-        CROSS_TRIPLE: [x86_64-w64-mingw32]
-
     steps:
       - uses: actions/checkout@v2
-      - name: Install mingw packages
-        run:  sudo apt-get install -y build-essential gcc-mingw-w64-x86-64
-      - name: Run make build for x86_64-w64-mingw32
+      - name: Run build
         run: bash -x build.sh
       - name: list targets
         run: ls -l target
