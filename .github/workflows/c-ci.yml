@@ -12,22 +12,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        CROSS_TRIPLE: [x86_64-linux-gnu, i686-w64-mingw32, x86_64-w64-mingw32, x86_64-apple-darwin]
-    container:
-      image: multiarch/crossbuild
-      env:
-        CROSS_TRIPLE: ${{ matrix.CROSS_TRIPLE }}
-      volumes:
-        - ${{ github.workspace }}:/workdir:Z
+#        CROSS_TRIPLE: [x86_64-linux-gnu, i686-w64-mingw32, x86_64-w64-mingw32, x86_64-apple-darwin]
+        CROSS_TRIPLE: [x86_64-w64-mingw32]
+
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Run make build
-        run: make
-      - name: Get project version
-        run: echo "PROJECT_VERSION=$(cat VERSION)" >> $GITHUB_ENV
+      - uses: actions/checkout@v2
+      - name: Install mingw packages
+        run: apt-get install -y build-essential gcc-mingw-w64-x86-64
+      - name: Run make build for x86_64-w64-mingw32
+        run: bash -x build.sh
       - name: list targets
         run: ls -l target
-      - name: Deploy to Bintray - ${{ matrix.CROSS_TRIPLE }}
-        if: ${{ github.event_name == 'push' && !endsWith(env.PROJECT_VERSION, '-SNAPSHOT') }}
-        run: ls -l
