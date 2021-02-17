@@ -36,3 +36,7 @@
 # Test code
 target
 .vertx
+
+# build deliverables
+dist
+*.tar.gz
