@@ -3,3 +3,5 @@ commit 2: Update once
 
 
 now the commit in revB without having commit 3 in revA, and we are continuing
+
+now it has cherry-picked commit in revC, which means no commit missing from revA to revC even the sha is different
